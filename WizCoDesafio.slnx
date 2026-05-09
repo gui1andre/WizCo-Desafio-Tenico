@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Domain/WizCoDesafio.Domain.csproj" />
+  <Project Path="WizCoDesafio.Tests/WizCoDesafio.Tests.csproj" />
+</Solution>
