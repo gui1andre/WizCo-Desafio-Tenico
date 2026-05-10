@@ -1,4 +1,6 @@
 <Solution>
   <Project Path="Domain/WizCoDesafio.Domain.csproj" />
+  <Project Path="WizCoDesafio.Application/WizCoDesafio.Application.csproj" Id="f2dfe7ba-a9b7-4d33-a4fe-de28ad19c4be" />
+  <Project Path="WizCoDesafio.Infrastructure/WizCoDesafio.Infrastructure.csproj" Id="ad7141bb-53ee-4e26-a128-621b9780e36e" />
   <Project Path="WizCoDesafio.Tests/WizCoDesafio.Tests.csproj" />
 </Solution>
