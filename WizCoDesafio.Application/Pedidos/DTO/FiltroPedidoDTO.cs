@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,6 +10,7 @@ namespace WizCoDesafio.Application.Pedido.DTO
             DateTime? DataFim,
             decimal ValorMinimo,
             decimal ValorMaximo,
+            PedidoStatusEnum? Status,
             int Pagina = 1,
             int TamanhoPagina = 20)
     {

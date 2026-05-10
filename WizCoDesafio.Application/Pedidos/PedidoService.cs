@@ -20,8 +20,6 @@ namespace WizCoDesafio.Application.Pedidos
             _mapper = mapper;
         }
 
-
-
         public async Task<PedidoDTO> CriarPedidoAsync(CriarPedidoDTO criarPedidoDTO)
         {
             var itens = criarPedidoDTO.Itens
@@ -56,7 +54,7 @@ namespace WizCoDesafio.Application.Pedidos
             await _pedidoRepository.RemoverAsync(pedido);
 
         }
-        public async Task<PedidoDTO> FecharPedidoAsync(Guid id)
+        public async Task<PedidoDTO> FecharPedidoPagoAsync(Guid id)
         {
             var pedido = await ObterPedidoOrthrowAsync(id);
             pedido.AtualizarStatus(PedidoStatusEnum.Pago);
@@ -64,6 +62,17 @@ namespace WizCoDesafio.Application.Pedidos
 
             return _mapper.Map<PedidoDTO>(pedido);
         }
+
+        public async Task<PedidoDTO> CancelarPedidoAsync(Guid id)
+        {
+            var pedido = await ObterPedidoOrthrowAsync(id);
+
+            pedido.AtualizarStatus(PedidoStatusEnum.Cancelado);
+
+            await _pedidoRepository.AtualizarAsync(pedido);
+            return _mapper.Map<PedidoDTO>(pedido);
+        }
+
         public async Task<ItemPedidoDTO> AdicionarItemAsync(Guid pedidoId, CriarItemDTO criarItemDTO)
         {
             var pedido = await ObterPedidoOrthrowAsync(pedidoId);

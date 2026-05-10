@@ -12,7 +12,7 @@ namespace WizCoDesafio.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(IServiceCollection services, IConfiguration configuration) 
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) 
         {
             services.AddDbContext<AppDbContext>(op => op.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 

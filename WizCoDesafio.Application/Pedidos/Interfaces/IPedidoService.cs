@@ -10,7 +10,8 @@ namespace WizCoDesafio.Application.Pedido.Interfaces
         Task<PedidoDTO> CriarPedidoAsync(CriarPedidoDTO criarPedidoDTO);
         Task<PedidoDTO?> ObterPedidoPorIdAsync(Guid id);
         Task<List<PedidoDTO>> ObterPedidoAsync(FiltroPedidoDTO filtroPedidoDTO);
-        Task<PedidoDTO> FecharPedidoAsync(Guid id);
+        Task<PedidoDTO> FecharPedidoPagoAsync(Guid id);
+        Task<PedidoDTO> CancelarPedidoAsync(Guid id);
         Task RemoverPedidoAsync(Guid id);
         Task<ItemPedidoDTO> AdicionarItemAsync(Guid pedidoId, CriarItemDTO criarItemDTO);
         Task<ItemPedidoDTO> AtualizarItemAsync(Guid pedidoId, Guid itemId, AtualizarItemDTO atualizarItemDTO);
