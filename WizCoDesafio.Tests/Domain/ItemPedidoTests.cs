@@ -10,7 +10,7 @@ public class ItemPedidoTests
     [InlineData(-1)]
     public void QuantidadeDeveSerMaiorQueZero(int quantidadeInvalida)
     {
-        Assert.Throws<ArgumentException>(() => new ItemPedido("Produto A", quantidadeInvalida, 10m, Guid.NewGuid()));
+        Assert.Throws<ArgumentException>(() => new ItemPedido("Produto A", quantidadeInvalida, 10m));
     }
 
     [Theory]
@@ -18,6 +18,6 @@ public class ItemPedidoTests
     [InlineData(-10)]
     public void PrecoUnitarioDeveSerMaiorQueZero(decimal precoInvalido)
     {
-        Assert.Throws<ArgumentException>(() => new ItemPedido("Produto A", 1, precoInvalido, Guid.NewGuid()));
+        Assert.Throws<ArgumentException>(() => new ItemPedido("Produto A", 1, precoInvalido));
     }
 }

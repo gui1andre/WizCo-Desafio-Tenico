@@ -15,9 +15,8 @@ namespace Domain.Entities
         private ItemPedido() : base() { }
 
 
-        public ItemPedido(string produtoNome, int quantidade, decimal precoUnitario, Guid pedidoId)
+        public ItemPedido(string produtoNome, int quantidade, decimal precoUnitario)
         {
-            PedidoId = pedidoId;
             AtualizarItemPedido(produtoNome, quantidade, precoUnitario);
         }
 

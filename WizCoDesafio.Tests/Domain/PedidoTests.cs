@@ -9,12 +9,11 @@ public class PedidoTests
     [Fact]
     public void DeveCriarPedidoComStatusNovoEValorTotalCalculado()
     {
-        var pedidoId = Guid.NewGuid();
 
         var itens = new List<ItemPedido>
         {
-            new("Produto A", 2, 10m, pedidoId),
-            new("Produto B", 1, 15m, pedidoId)
+            new("Produto A", 2, 10m),
+            new("Produto B", 1, 15m)
         };
 
         var pedido = new Pedido("Cliente Válido", itens);
@@ -33,10 +32,9 @@ public class PedidoTests
     [Fact]
     public void DeveRecalcularValorTotalAoAdicionarItem()
     {
-        var pedidoId = Guid.NewGuid();
-        var pedido = new Pedido("Cliente Válido", [new ItemPedido("Produto A", 1, 10m, pedidoId)]);
+        var pedido = new Pedido("Cliente Válido", [new ItemPedido("Produto A", 1, 10m)]);
 
-        pedido.AdicionarItem(new ItemPedido("Produto B", 2, 5m, pedido.Id));
+        pedido.AdicionarItem(new ItemPedido("Produto B", 2, 5m));
 
         Assert.Equal(20m, pedido.ValorTotal);
     }
@@ -44,9 +42,8 @@ public class PedidoTests
     [Fact]
     public void DeveRecalcularValorTotalAoRemoverItem()
     {
-        var pedidoId = Guid.NewGuid();
-        var item1 = new ItemPedido("Produto A", 1, 10m, pedidoId);
-        var item2 = new ItemPedido("Produto B", 2, 5m, pedidoId);
+        var item1 = new ItemPedido("Produto A", 1, 10m);
+        var item2 = new ItemPedido("Produto B", 2, 5m);
         var pedido = new Pedido("Cliente Válido", [item1, item2]);
 
         pedido.RemoverItem(item2.Id);
@@ -58,8 +55,7 @@ public class PedidoTests
     [Fact]
     public void DeveRecalcularValorTotalAoAtualizarItem()
     {
-        var pedidoId = Guid.NewGuid();
-        var item = new ItemPedido("Produto A", 1, 10m, pedidoId);
+        var item = new ItemPedido("Produto A", 1, 10m);
         var pedido = new Pedido("Cliente Válido", [item]);
 
         item.AtualizarItemPedido("Produto A", 3, 10m);
@@ -71,8 +67,7 @@ public class PedidoTests
     [Fact]
     public void PedidoPagoNaoPodeSerCancelado()
     {
-        var pedidoId = Guid.NewGuid();
-        var pedido = new Pedido("Cliente Válido", [new ItemPedido("Produto A", 1, 10m, pedidoId)]);
+        var pedido = new Pedido("Cliente Válido", [new ItemPedido("Produto A", 1, 10m)]);
         pedido.AtualizarStatus(PedidoStatusEnum.Pago);
 
         Assert.Throws<InvalidOperationException>(() => pedido.AtualizarStatus(PedidoStatusEnum.Cancelado));

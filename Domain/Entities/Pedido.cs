@@ -74,11 +74,8 @@ namespace Domain.Entities
         }
         private void ValidarPedidoAberto()
         {
-            if (Status == PedidoStatusEnum.Cancelado)
-                throw new InvalidOperationException("Não é possível alterar um pedido cancelado.");
-
-            if(Status == PedidoStatusEnum.Pago)
-                throw new InvalidOperationException("Não é possível alterar um pedido pago.");
+            if (Status == PedidoStatusEnum.Cancelado || Status == PedidoStatusEnum.Pago)
+                throw new InvalidOperationException($"Não é possível alterar um pedido {Status}.");
         }
     }
 }
