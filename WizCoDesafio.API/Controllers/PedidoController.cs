@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WizCoDesafio.Application.Pedido.DTO;
 using WizCoDesafio.Application.Pedido.Interfaces;
@@ -17,27 +18,37 @@ namespace WizCoDesafio.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<PedidoDTO>> CriarPedido(CriarPedidoDTO request)
+        public async Task<ActionResult<PedidoDTO>> CriarPedido(CriarPedidoDTO request, [FromServices] IValidator<CriarPedidoDTO> validator)
         {
+            var result = await validator.ValidateAsync(request);
+
+            if(!result.IsValid)
+                return BadRequest(result.Errors.Select(e => e.ErrorMessage));
+
             var pedido = await _pedidoService.CriarPedidoAsync(request);
 
             return CreatedAtAction(nameof(ObterPedido), new { id = pedido.PedidoId }, pedido);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> ObterPedido(Guid id)
+        public async Task<ActionResult<PedidoDTO>> ObterPedido(Guid id)
         {
-            var result = await _pedidoService.ObterPedidoPorIdAsync(id);
+            var pedido = await _pedidoService.ObterPedidoPorIdAsync(id);
 
-            if (result == null)
+            if (pedido  == null)
                 return NotFound();
 
-            return Ok(result);
+            return Ok(pedido);
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PedidoDTO>>> ObterPedidos([FromQuery] FiltroPedidoDTO filtro)
+        public async Task<ActionResult<IEnumerable<PedidoDTO>>> ObterPedidos([FromQuery] FiltroPedidoDTO filtro, [FromServices] IValidator<FiltroPedidoDTO> validator)
         {
+            var result = await validator.ValidateAsync(filtro);
+
+            if (!result.IsValid)
+                return BadRequest(result.Errors.Select(e => e.ErrorMessage));
+
             var pedidos = await _pedidoService.ObterPedidoAsync(filtro);
             return Ok(pedidos);
         }
