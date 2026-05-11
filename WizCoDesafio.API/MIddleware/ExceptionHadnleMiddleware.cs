@@ -8,7 +8,10 @@ namespace WizCoDesafio.API.MIddleware
         private readonly ILogger<ExceptionHadnleMiddleware> _logger;
         private readonly IHostEnvironment _env;
 
-        public ExceptionHadnleMiddleware(RequestDelegate next, ILogger<ExceptionHadnleMiddleware> logger, IHostEnvironment env)
+        public ExceptionHadnleMiddleware(
+            RequestDelegate next,
+            ILogger<ExceptionHadnleMiddleware> logger,
+            IHostEnvironment env)
         {
             _next = next;
             _logger = logger;
@@ -23,36 +26,45 @@ namespace WizCoDesafio.API.MIddleware
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Ocorreu um erro inesperado.");
-                await HandleExceptionAsync(context, e);
+                var error = MappedException(e);
+
+                _logger.Log(
+                    error.LogLevel,
+                    e,
+                    "Falha na requisição {Method} {Path}. Status: {StatusCode}. TraceId: {TraceId}",
+                    context.Request.Method,
+                    context.Request.Path,
+                    error.StatusCode,
+                    context.TraceIdentifier);
+
+                await HandleExceptionAsync(context, e, error);
             }
         }
 
-        private async Task HandleExceptionAsync(HttpContext context, Exception e)
+        private async Task HandleExceptionAsync(HttpContext context, Exception e, ExceptionMapped error)
         {
             context.Response.ContentType = "application/json";
-
-            var (statusCode, title) = e switch
-            {
-                KeyNotFoundException => (StatusCodes.Status404NotFound, "Recurso não localizado."),
-                InvalidOperationException => (StatusCodes.Status400BadRequest, "Operação inválida."),
-                ArgumentException => (StatusCodes.Status400BadRequest, "Argumento inválido."),
-                _ => (StatusCodes.Status500InternalServerError, "Erro interno do servidor.")
-            };
-
-            context.Response.StatusCode = statusCode;
+            context.Response.StatusCode = error.StatusCode;
 
             var body = new
             {
-                title,
-                statusCode,
-                detail = _env.IsDevelopment() ? e.ToString() : title,
+                title = error.Title,
+                statusCode = error.StatusCode,
+                detail = _env.IsDevelopment() ? e.ToString() : error.Title,
                 instance = context.Request.Path.ToString()
             };
 
-            var json = JsonSerializer.Serialize(body);
-
-            await context.Response.WriteAsync(json);
+            await context.Response.WriteAsync(JsonSerializer.Serialize(body));
         }
+
+        private static ExceptionMapped MappedException(Exception e) => e switch
+        {
+            KeyNotFoundException => new(StatusCodes.Status404NotFound, "Recurso não localizado.", LogLevel.Warning),
+            InvalidOperationException => new(StatusCodes.Status400BadRequest, "Operação inválida.", LogLevel.Warning),
+            ArgumentException => new(StatusCodes.Status400BadRequest, "Argumento inválido.", LogLevel.Warning),
+            _ => new(StatusCodes.Status500InternalServerError, "Erro interno do servidor.", LogLevel.Error)
+        };
+
+        private record ExceptionMapped(int StatusCode, string Title, LogLevel LogLevel);
     }
 }
