@@ -1,4 +1,3 @@
-using Scalar.AspNetCore;
 using WizCoDesafio.API.MIddleware;
 using WizCoDesafio.Application;
 using WizCoDesafio.Infrastructure;
@@ -9,10 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddOpenApi();
-
 
 var app = builder.Build();
 
@@ -22,8 +22,8 @@ app.UseMiddleware<ExceptionHadnleMiddleware>();
 
 if (app.Environment.IsDevelopment()) 
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 // Configure the HTTP request pipeline.

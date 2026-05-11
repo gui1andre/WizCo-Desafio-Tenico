@@ -1,6 +1,6 @@
 # WizCoDesafio
 
-API em .NET 10 para gestão de pedidos e itens, seguindo arquitetura em camadas com foco em separação de responsabilidades.
+API em .NET 8 para gestão de pedidos e itens, seguindo arquitetura em camadas com foco em separação de responsabilidades.
 
 ## Arquitetura do projeto
 
@@ -29,7 +29,7 @@ A solução está organizada em 5 projetos:
   - Endpoints HTTP (Controllers)
   - Configuração de DI e pipeline
   - Middleware global de exceção
-  - OpenAPI + Scalar para documentação
+  - Swagger/OpenAPI para documentação
 
 - **WizCoDesafio.Tests**
   - Testes automatizados (principalmente de domínio)
@@ -45,7 +45,7 @@ A solução está organizada em 5 projetos:
 
 ## Pré-requisitos
 
-- .NET SDK 10
+- .NET SDK 8
 - (Opcional) `dotnet-ef` para migrations:
 
 ```bash
@@ -81,10 +81,10 @@ Conforme `launchSettings.json`:
 - HTTP: `http://localhost:5005`
 - HTTPS: `https://localhost:7198`
 
-OpenAPI/Scalar em ambiente Development:
+Swagger/OpenAPI em ambiente Development:
 
-- OpenAPI: `/openapi/v1.json`
-- Scalar UI: `/scalar/v1`
+- OpenAPI JSON: `/swagger/v1/swagger.json`
+- Swagger UI: `/swagger` (ou `/swagger/index.html`)
 
 ## Banco de dados
 
