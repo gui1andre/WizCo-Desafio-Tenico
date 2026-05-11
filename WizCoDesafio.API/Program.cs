@@ -1,4 +1,5 @@
 using Scalar.AspNetCore;
+using WizCoDesafio.API.MIddleware;
 using WizCoDesafio.Application;
 using WizCoDesafio.Infrastructure;
 
@@ -14,6 +15,9 @@ builder.Services.AddOpenApi();
 
 
 var app = builder.Build();
+
+
+app.UseMiddleware<ExceptionHadnleMiddleware>();
 
 
 if (app.Environment.IsDevelopment()) 
