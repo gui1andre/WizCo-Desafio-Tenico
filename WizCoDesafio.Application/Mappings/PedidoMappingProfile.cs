@@ -11,7 +11,12 @@ namespace WizCoDesafio.Application.Mappings
         public PedidoMappingProfile()
         {
             CreateMap<DomainPedido, PedidoDTO>()
-                .ForCtorParam("pedidoId", opt => opt.MapFrom(src => src.Id));
+                .ForCtorParam("PedidoId", opt => opt.MapFrom(src => src.Id))
+                .ForCtorParam("ClienteNome", opt => opt.MapFrom(src => src.ClienteNome))
+                .ForCtorParam("Status", opt => opt.MapFrom(src => src.Status))
+                .ForCtorParam("ValorTotal", opt => opt.MapFrom(src => src.ValorTotal))
+                .ForCtorParam("Itens", opt => opt.MapFrom(src => src.Itens))
+                .ForCtorParam("CriadoEm", opt => opt.MapFrom(src => src.CriadoEm));
 
             CreateMap<PedidoDTO, DomainPedido>()
                 .ConstructUsing((src, context) => new DomainPedido(

@@ -46,14 +46,6 @@ namespace WizCoDesafio.Application.Pedidos
 
             return _mapper.Map<PedidoDTO>(pedido);
         }
-
-        public async Task RemoverPedidoAsync(Guid id)
-        {
-            var pedido = await ObterPedidoOrthrowAsync(id);
-
-            await _pedidoRepository.RemoverAsync(pedido);
-
-        }
         public async Task<PedidoDTO> FecharPedidoPagoAsync(Guid id)
         {
             var pedido = await ObterPedidoOrthrowAsync(id);
@@ -62,6 +54,8 @@ namespace WizCoDesafio.Application.Pedidos
 
             return _mapper.Map<PedidoDTO>(pedido);
         }
+
+
 
         public async Task<PedidoDTO> CancelarPedidoAsync(Guid id)
         {
@@ -92,7 +86,7 @@ namespace WizCoDesafio.Application.Pedidos
             if (item == null)
                 throw new KeyNotFoundException("Não foi encontrado um item com o ID fornecido.");
 
-            pedido.AtualizarItem(item);
+            pedido.AtualizarItem(item.Id, atualizarItemDTO.ProdutoNome, atualizarItemDTO.Quantidade, atualizarItemDTO.PrecoUnitario);
             await _pedidoRepository.AtualizarAsync(pedido);
 
             return _mapper.Map<ItemPedidoDTO>(item);
@@ -104,6 +98,8 @@ namespace WizCoDesafio.Application.Pedidos
 
             if (item == null)
                 throw new KeyNotFoundException("Não foi encontrado um item com o ID fornecido.");
+
+            pedido.RemoverItem(item.Id);
 
             await _pedidoRepository.AtualizarAsync(pedido);
              

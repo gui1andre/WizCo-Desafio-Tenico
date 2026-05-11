@@ -5,7 +5,8 @@ using System.Text;
 
 namespace WizCoDesafio.Application.Pedido.DTO
 {
-    public record FiltroPedidoDTO(string ClienteNome,
+    public record FiltroPedidoDTO(
+            string? ClienteNome,
             DateTime? DataInicio,
             DateTime? DataFim,
             decimal ValorMinimo,
