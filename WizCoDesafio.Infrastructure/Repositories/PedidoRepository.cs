@@ -57,10 +57,16 @@ namespace WizCoDesafio.Infrastructure.Repositories
                 query = query.Where(p => p.ValorTotal <= filtro.ValorMaximo);
             }
 
+            if(filtro.Status.HasValue)
+            {
+                query = query.Where(p => p.Status == filtro.Status.Value);
+            }
+
             var skip = (pagina - 1) * tamanhoPagina;
 
             return await query
                 .AsNoTracking()
+                .Include(x => x.Itens)
                 .OrderByDescending(x => x.CriadoEm)
                 .Skip(skip)
                 .Take(tamanhoPagina)

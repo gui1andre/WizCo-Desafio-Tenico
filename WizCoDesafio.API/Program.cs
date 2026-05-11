@@ -1,3 +1,4 @@
+using Scalar.AspNetCore;
 using WizCoDesafio.Application;
 using WizCoDesafio.Infrastructure;
 
@@ -9,8 +10,17 @@ builder.Services.AddControllers();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddOpenApi();
+
 
 var app = builder.Build();
+
+
+if (app.Environment.IsDevelopment()) 
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+}
 
 // Configure the HTTP request pipeline.
 
