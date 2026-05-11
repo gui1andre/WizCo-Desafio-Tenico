@@ -46,16 +46,16 @@ namespace Domain.Entities
             RecalcularValorTotal();
             AtualizadoEm = DateTime.UtcNow;
         }
-        public void AtualizarItem(ItemPedido item)
+        public void AtualizarItem(Guid itemId, string produtoNome, int quantidade, decimal precoUnitario)
         {
             ValidarPedidoAberto();
 
-            var itemExistente = _itens.FirstOrDefault(i => i.Id == item.Id)
-                ?? throw new ArgumentException("Item não encontrado no pedido.", nameof(item.Id));
+            var itemExistente = _itens.FirstOrDefault(i => i.Id == itemId)
+                ?? throw new ArgumentException("Item não encontrado no pedido.", nameof(itemId));
 
-            itemExistente.AlterarProdutoNome(item.ProdutoNome);
-            itemExistente.AlterarProdutoQuantidade(item.Quantidade);
-            itemExistente.AtualizarItemPedido(item.ProdutoNome, item.Quantidade, item.PrecoUnitario);
+            itemExistente.AlterarProdutoNome(produtoNome);
+            itemExistente.AlterarProdutoQuantidade(quantidade);
+            itemExistente.AtualizarItemPedido(produtoNome, quantidade, precoUnitario);
 
             RecalcularValorTotal();
             AtualizadoEm = DateTime.UtcNow;

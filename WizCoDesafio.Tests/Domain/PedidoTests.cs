@@ -58,8 +58,7 @@ public class PedidoTests
         var item = new ItemPedido("Produto A", 1, 10m);
         var pedido = new Pedido("Cliente Válido", [item]);
 
-        item.AtualizarItemPedido("Produto A", 3, 10m);
-        pedido.AtualizarItem(item);
+        pedido.AtualizarItem(item.Id, "Produto A", 3, 10m);
 
         Assert.Equal(30m, pedido.ValorTotal);
     }
@@ -71,5 +70,14 @@ public class PedidoTests
         pedido.AtualizarStatus(PedidoStatusEnum.Pago);
 
         Assert.Throws<InvalidOperationException>(() => pedido.AtualizarStatus(PedidoStatusEnum.Cancelado));
+    }
+
+    [Fact]
+    public void DeveLancarExcecaoAoAtualizarItemInexistente()
+    {
+        var pedido = new Pedido("Cliente Válido", [new ItemPedido("Produto A", 1, 10m)]);
+
+        Assert.Throws<ArgumentException>(() =>
+            pedido.AtualizarItem(Guid.NewGuid(), "Produto X", 2, 5m));
     }
 }
